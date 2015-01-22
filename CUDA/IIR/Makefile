@@ -53,7 +53,7 @@ else
   NV_LIB = -L$(CUDA_DIR)/lib
 endif
 
-LIB_LINKR = -lcudart
+LIB_LINKER = -lcudart
 
 SMS ?= 30 35 37 50
 
