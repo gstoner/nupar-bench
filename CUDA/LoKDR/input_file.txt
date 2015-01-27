@@ -1,0 +1,44 @@
+for profiling: CUDA_PROFILE=1 CUDA_PROFILE_CONFIG=cuda_prof.cfg ./run_cns_forward_command 
+
+feature selection:
+
+arrhy:
+forward:
+./lokdr -run_floating_search 0 -run_backward_search 0 -wrkld_name arrhythmia -wrkld_path ~/Datasets -data_fldr arrhythmia -data_file arrhythmia_data_labels.csv -results_fldr arrhythmia_kernel_forward_fs_results_k_400_sigma_3 -k 400 -sigma 3.0 -data_count 450 -feature_count 276 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+backward:
+./lokdr -run_floating_search 0 -run_backward_search 1 -wrkld_name arrhythmia -wrkld_path ~/Datasets -data_fldr arrhythmia -data_file arrhythmia_data_labels.csv -results_fldr arrhythmia_kernel_backward_fs_results_k_400_sigma_3 -k 400 -sigma 3.0 -data_count 450 -feature_count 276 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+
+
+cns:
+forward:
+./lokdr -run_floating_search 0 -run_backward_search 0 -wrkld_name cns -wrkld_path ~/Datasets -data_fldr cns -data_file cns_data_labels.csv -results_fldr cns_kernel_forward_fs_results_k_30_sigma_3 -k 30 -sigma 3.0 -data_count 90 -feature_count 7129 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+backward:
+./lokdr -run_floating_search 0 -run_backward_search 1 -wrkld_name cns -wrkld_path ~/Datasets -data_fldr cns -data_file cns_data_labels.csv -results_fldr cns_kernel_backward_fs_results_k_30_sigma_3 -k 30 -sigma 3.0 -data_count 90 -feature_count 7129 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+
+lymph:
+forward:
+./lokdr -run_floating_search 0 -run_backward_search 0 -wrkld_name lymphoma -wrkld_path ~/Datasets -data_fldr lymphoma -data_file lymphoma_data_labels.csv -results_fldr lymphoma_kernel_forward_fs_results_k_25_sigma_3 -k 25 -sigma 3.0 -data_count 77 -feature_count 7129 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+backward:
+./lokdr -run_floating_search 0 -run_backward_search 1 -wrkld_name lymphoma -wrkld_path ~/Datasets -data_fldr lymphoma -data_file lymphoma_data_labels.csv -results_fldr lymphoma_kernel_backward_fs_results_k_25_sigma_3 -k 25 -sigma 3.0 -data_count 77 -feature_count 7129 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+
+ovar:
+forward:
+./lokdr -run_floating_search 0 -run_backward_search 0 -wrkld_name ovarian -wrkld_path ~/Datasets -data_fldr ovarian -data_file ovarian_data_labels.csv -results_fldr ovarian_kernel_forward_fs_results_k_20_sigma_3 -k 20 -sigma 3.0 -data_count 66 -feature_count 6000 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+backward:
+./lokdr -run_floating_search 0 -run_backward_search 1 -wrkld_name ovarian -wrkld_path ~/Datasets -data_fldr ovarian -data_file ovarian_data_labels.csv -results_fldr ovarian_kernel_backward_fs_results_k_20_sigma_3 -k 20 -sigma 3.0 -data_count 66 -feature_count 6000 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+
+prost:
+forward:
+./lokdr -run_floating_search 0 -run_backward_search 0 -wrkld_name prostate -wrkld_path ~/Datasets -data_fldr prostate -data_file prostate_data_labels.csv -results_fldr prostate_kernel_forward_fs_results_k_30_sigma_3 -k 30 -sigma 3.0 -data_count 89 -feature_count 6000 -use_initial 0 -initial_file 0 -initial_criterions 0
+
+backward:
+./lokdr -run_floating_search 0 -run_backward_search 1 -wrkld_name prostate -wrkld_path ~/Datasets -data_fldr prostate -data_file prostate_data_labels.csv -results_fldr prostate_kernel_backward_fs_results_k_30_sigma_3 -k 30 -sigma 3.0 -data_count 89 -feature_count 6000 -use_initial 0 -initial_file 0 -initial_criterions 0
+
