@@ -1,0 +1,7 @@
+Parallel Finite Difference Time Domain (FDTD)
+
+Description:
+  This benchmark implements a single-GPU 3D FDTD simulation in OpenCL. It is provided as a library. Check out `test.f90' and `Makefile' to learn how to use the library and compile your program. The kernels `kernels.bin' are provided in binary format. To run your program, an input file `grid.inp' should be provided. Check out the sample file to learn about the input format.
+
+For questions, please contact Zhongliang Chen at zhonchen@ece.neu.edu.
+
