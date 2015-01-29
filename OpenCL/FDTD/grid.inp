@@ -1,0 +1,78 @@
+ <dx>      <dy>      <dz>
+   0.0067   0.0067   0.0067
+ <nxs>     <nys>     <nzs>
+   300    10    10
+CPML: 1) x-, 2) x+, 3) y-, 4) y+, 5) z-,    	6) z+
+PML 1: pad, npml, sig_, eps, amu, akappa,     m, alpha, nalpha, malpha
+        0    6     1.0   1.0  1.0   15.0    3         0.2     6      1
+PML 2: pad, npml, sig_, eps, amu, akappa,     m, alpha, nalpha, malpha
+        0    6     1.0   1.0  1.0   15.0    3         0.2     6      1
+PML 3: pad, npml, sig_, eps, amu, akappa,     m, alpha, nalpha, malpha
+        0    0     1.0   1.0  1.0   15.0    0         0.2     0      0
+PML 4: pad, npml, sig_, eps, amu, akappa,     m, alpha, nalpha, malpha
+        0    0     1.0   1.0  1.0   15.0    0         0.2     0      0
+PML 5: pad, npml, sig_, eps, amu, akappa,     m, alpha, nalpha, malpha
+        0    0     1.0   1.0  1.0   15.0    0         0.2     0      0
+PML 6: pad, npml, sig_, eps, amu, akappa,     m, alpha, nalpha, malpha
+        0    0     1.0   1.0  1.0   15.0    0         0.2     0      0
+ <cstab>
+ 0.97
+ <nsc>  <akx>  <aky>  <akz>  <ifold>
+   1   0.000E+00   0.000E+00   0.000E+00   0
+ <freq>  <freq_cen>  <band>  <i_cal_f>
+     0.2000E+15     0.2000E+15     0.2000E+15  2
+ <fftscale>     <#cycles>
+  15             200     
+  <radius>
+     0.001
+ <prob_descrip>  <num_medium>  <ipbc>
+     0                   1          2
+ <E_num_pole_Debye>  <E_num_pole_Drude>        <E_num_pole_Lorentz>
+   0                     0          0
+ <H_num_pole_Debye> <H_num_pole_Drude>         <H_num_pole_Lorentz>
+   0                     0          0
+ <Lorentz_nonlinear>  <Debye_nonlinear>
+               0                  0
+   <Gain_Linear>	<Gain_NonLinear>
+         0            0
+ <interval of cycles to store field>
+                50                  
+
+ '****' Material Type
+'mate'
+  1
+ 'unif'
+ 'unif'
+ 'unif'
+ 12.25 0.0
+ 12.25 0.0
+ 12.25 0.0
+ 1.0 0.0
+ 1.0 0.0
+ 1.0 0.0
+
+ '****' The Structure
+ 'mloc'
+           1         150           2           2         175          8           8
+
+'****' Plane Wave (thetp,phip,saip,dsp,       i1,j1,k1,i2 ,j2,k2)
+ 'plwa'
+  90.00 180.00  90.00 0.0067   10    0    0  280   10   10
+
+  '****' Source(type,tsig,amp,tw=1/(2pi*band    ),to=3 or 4*sqrt(2)tw,i1j1k1-i2j2k2)
+ 'srce'
+                     'ez' 3 3 1 7.9577e-16 4.5016e-15 0 0 0 0      0 0
+
+ '****' Output Storage
+ 'outp'
+ 2
+
+  'nearR.out'
+  'near' 'nnn' 'ez' 290 0 0 291  10  10
+
+  'nearT.out'
+  'near' 'nnn' 'ez' 148 0 0 149  10  10
+
+ 'obsv'
+  20  5  5
+ 'done'
