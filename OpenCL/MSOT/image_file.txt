@@ -1,0 +1,5 @@
+../Benchmarks/Benchmark4/Messi
+../Benchmarks/Benchmark4/high-quality
+jpg
+2250
+2370

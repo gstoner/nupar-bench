@@ -1,0 +1,96 @@
+
+__kernel void track_object ( 	__global const float *base_histogram,
+				__global float *histograms,
+				__global const float *kernelVal,
+				__global short *bins,
+				__global const short *max_index,
+				__global float *weight_sum,
+				__global const short *object_width,
+				__global const short *object_height,
+				__global const short *max_size,
+				__global const int *distance,
+				__global char *converged_objects) 
+
+{
+	int i;
+	int local_id = get_local_id(0);
+	int global_id = get_global_id(0);
+	int local_size = get_local_size(0);
+	__local int d[1];
+	__local int num_neighbors[1];
+	__local int neighbor_index[1];
+	__local int maxIndex[1];
+	__local int object_index[1];
+	__local int maxSize[1];
+
+	d[0] = distance[0];
+	num_neighbors[0] = pow((float)(2*d[0] + 1), 2);
+	object_index[0] = (global_id - local_id)/(local_size*num_neighbors[0]);
+	neighbor_index[0] = (global_id - local_id)/(local_size) % num_neighbors[0];
+
+	if(converged_objects[object_index[0]] == 0) {
+
+	maxIndex[0] = max_index[0];
+	for(i=0; i < maxIndex[0]; i++) {
+		histograms[global_id*maxIndex[0] + i] = 0;
+//                base_histogram_local[i] = base_histogram[object_index[0]*maxIndex[0] + i];
+	}
+
+	maxSize[0] = max_size[0];
+
+	
+	//calculate Pu
+	__local int width[1];
+	width[0] = object_width[object_index[0]];
+	__local int height[1];
+	height[0] = object_height[object_index[0]];
+	__local int binIndex[1];
+	__local int row[1];
+	__local int col[1];
+	__local int neighborRow[1];
+	__local int neighborCol[1];
+
+	weight_sum[3*global_id] = 0;
+	weight_sum[3*global_id+1] = 0;
+	weight_sum[3*global_id+2] = 0;
+
+
+	for(i=local_id; i < width[0]*height[0]; i = i + local_size) {
+                row[0] = i/width[0];
+                col[0] = i%width[0];
+                neighborRow[0] = neighbor_index[0] / (2*d[0] + 1);
+                neighborCol[0] = neighbor_index[0] % (2*d[0] + 1);
+                binIndex[0] = (row[0] + neighborRow[0]) * (width[0]+2*d[0]) + (col[0] + neighborCol[0]);
+                histograms[global_id*maxIndex[0] + (int)bins[object_index[0]*maxSize[0] + binIndex[0]]] += kernelVal[object_index[0]*maxSize[0] + i];
+	}
+	//barrier
+	barrier(CLK_GLOBAL_MEM_FENCE);
+	//reduction
+	int j;
+	for(i = local_id; i < maxIndex[0]; i = i + local_size) {
+		for(j = 1; j < local_size; j++) {
+			histograms[(global_id-local_id)*maxIndex[0] + i] += histograms[(global_id-local_id)*maxIndex[0] + j * maxIndex[0] + i];
+		}
+		if(histograms[(global_id-local_id)*maxIndex[0] + i] != 0) {
+			histograms[(global_id-local_id)*maxIndex[0] + i] = sqrt(base_histogram[object_index[0]*maxIndex[0] + i]/histograms[(global_id-local_id)*maxIndex[0] + i]);
+		}
+	}
+	barrier(CLK_GLOBAL_MEM_FENCE);
+
+	float curPixelWeight;
+	for(i=local_id; i < width[0]*height[0]; i = i + local_size) {
+		if (kernelVal[object_index[0]*maxSize[0] + i] != 0){
+                        row[0] = i/width[0];
+                        col[0] = i%width[0];
+                	neighborRow[0] = neighbor_index[0] / (2*d[0] + 1);
+	                neighborCol[0] = neighbor_index[0] % (2*d[0] + 1);
+                        binIndex[0] = (row[0] + neighborRow[0]) * (width[0]+2*d[0]) + (col[0] + neighborCol[0]);
+                        curPixelWeight = histograms[(global_id-local_id) * maxIndex[0] + (int)bins[object_index[0]*maxSize[0] + binIndex[0]]];
+                        weight_sum[3*global_id+0] += curPixelWeight;
+                        weight_sum[3*global_id+1] += (i%width[0] - (width[0] >> 1))*curPixelWeight;
+                        weight_sum[3*global_id+2] += (i/width[0] - (height[0] >> 1))*curPixelWeight;
+		}
+	}
+
+	}
+}
